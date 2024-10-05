@@ -10,7 +10,8 @@ namespace ProductsAPI.Profiles
         public ProductProfile()
         {
             CreateMap<Product, ProductResponse>()
+                .ForMember(x => x.StatusId, y => y.MapFrom(z => z.Status))
                 .ForMember(x => x.Status, y => y.MapFrom(z => z.Status.GetLocalizedValue()));
-        }
+		}
     }
 }
