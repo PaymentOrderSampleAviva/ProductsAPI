@@ -15,13 +15,6 @@ public static class DependencyConfig
 		return services;
 	}
 
-	public static IServiceCollection AddCoreDependenciesPro(this IServiceCollection services)
-	{
-		services.AddCoreDependencies();
-		//Register production data storage here.
-		return services;
-	}
-
 	public static IServiceCollection AddCoreDependencies(this IServiceCollection services)
 	{
 		services.AddAppServices();
