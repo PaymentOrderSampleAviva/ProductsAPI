@@ -25,7 +25,7 @@ public class ProductsController(IProductsAppService productsAppService, ILogger<
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "An exception was thrown getting the product list.");
+			_logger.LogError(ex, "An exception was thrown getting the products list.");
 		}
 
 		return StatusCode(500);
