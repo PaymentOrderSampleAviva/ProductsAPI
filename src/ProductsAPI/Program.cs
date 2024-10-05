@@ -10,6 +10,7 @@ namespace ProductsAPI
 			// Add services to the container.
 
 			builder.Services.AddControllers();
+			builder.Services.AddCoreDependenciesDev();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
@@ -21,6 +22,7 @@ namespace ProductsAPI
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
+				app.DataSeedAsync().Wait();
 			}
 
 			app.UseHttpsRedirection();

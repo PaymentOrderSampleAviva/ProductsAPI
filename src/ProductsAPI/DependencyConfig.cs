@@ -53,6 +53,7 @@ public static class DependencyConfig
 	private static IServiceCollection AddDefaultServices(this IServiceCollection services)
 	{
 		services.AddAutoMapper(Assembly.GetExecutingAssembly());
+		services.AddLogging();
 		return services;
 	}
 }

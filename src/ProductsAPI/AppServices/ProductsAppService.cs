@@ -4,11 +4,10 @@ using ProductsAPI.Repositories;
 
 namespace ProductsAPI.AppServices;
 
-public class ProductsAppService(IProductsRepository repository, IMapper mapper, Logger<ProductsAppService> logger) : IProductsAppService 
+public class ProductsAppService(IProductsRepository repository, IMapper mapper) : IProductsAppService 
 {
 	private readonly IProductsRepository _repository = repository;
 	private readonly IMapper _mapper = mapper;
-	private readonly ILogger _logger = logger;
 
 	public async Task<IReadOnlyList<ProductResponse>> ListAllAsync()
 	{
