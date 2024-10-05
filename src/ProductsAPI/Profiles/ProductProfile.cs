@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProductsAPI.DataContracts;
+using ProductsAPI.Extensions;
 using ProductsAPI.Models;
 
 namespace ProductsAPI.Profiles
@@ -9,7 +10,7 @@ namespace ProductsAPI.Profiles
         public ProductProfile()
         {
             CreateMap<Product, ProductResponse>()
-                .ForMember(x => x.Status, y => y.MapFrom(z => z.Status));
+                .ForMember(x => x.Status, y => y.MapFrom(z => z.Status.GetLocalizedValue()));
         }
     }
 }
