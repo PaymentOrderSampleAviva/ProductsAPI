@@ -27,12 +27,14 @@ public static class DependencyConfig
 	private static IServiceCollection AddAppServices(this IServiceCollection services)
 	{
 		services.AddTransient<IProductsAppService, ProductsAppService>();
+		services.AddTransient<IOrderAppService, OrderAppService>();
 		return services;
 	}
 
 	private static IServiceCollection AddRepositories(this IServiceCollection services)
 	{
 		services.AddTransient<IProductsRepository, ProductsRepository>();
+		services.AddTransient<IOrdersRepository, OrdersRepository>();
 		return services;
 	}
 
