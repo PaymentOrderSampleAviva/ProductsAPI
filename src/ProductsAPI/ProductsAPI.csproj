@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="PaymentProcessors\PaymentMethodStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PaymentMethodStrings.resx</DependentUpon>
+    </Compile>
     <Compile Update="ResourceStrings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -27,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="PaymentProcessors\PaymentMethodStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PaymentMethodStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ResourceStrings.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator>ResXFileCodeGenerator</Generator>
