@@ -9,9 +9,10 @@ namespace ProductsAPI.Profiles
 	{
         public ProductProfile()
         {
-            CreateMap<Product, ProductResponse>()
+            CreateMap<Product, ProductDto>()
+                .ForMember(x => x.ProductId, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.StatusId, y => y.MapFrom(z => z.Status))
-                .ForMember(x => x.Status, y => y.MapFrom(z => z.Status.GetLocalizedValue()));
+				.ForMember(x => x.Status, y => y.MapFrom(z => z.Status.GetLocalizedValue()));
 		}
     }
 }

@@ -4,6 +4,6 @@ namespace ProductsAPI.AppServices.Abstractions
 {
     public interface IProductsAppService
     {
-        Task<IReadOnlyList<ProductResponse>> ListAllAsync();
+        Task<IReadOnlyList<ProductDto>> ListAllAsync();
     }
 }

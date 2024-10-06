@@ -10,9 +10,9 @@ public class ProductsAppService(IProductsRepository repository, IMapper mapper) 
 	private readonly IProductsRepository _repository = repository;
 	private readonly IMapper _mapper = mapper;
 
-	public async Task<IReadOnlyList<ProductResponse>> ListAllAsync()
+	public async Task<IReadOnlyList<ProductDto>> ListAllAsync()
 	{
 		var products = await _repository.GetAllAsync();
-		return _mapper.Map<List<ProductResponse>>(products);
+		return _mapper.Map<List<ProductDto>>(products);
 	}
 }

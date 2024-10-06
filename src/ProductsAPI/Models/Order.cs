@@ -29,7 +29,12 @@ public class Order
 
 		PaymentOrderId = paymentOrderId;
 		
-		foreach (OrderFee fee in orderFees)
+		if (Fees == null)
+		{
+			Fees = new List<OrderFee>();
+		}
+
+		foreach (var fee in orderFees)
 		{
 			Fees.Add(fee);
 		}

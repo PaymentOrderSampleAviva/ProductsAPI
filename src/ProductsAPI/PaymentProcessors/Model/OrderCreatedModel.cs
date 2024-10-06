@@ -1,8 +1,13 @@
-﻿namespace ProductsAPI.PaymentProcessors.Model;
+﻿using System.Text.Json.Serialization;
+
+namespace ProductsAPI.PaymentProcessors.Model;
 
 public class OrderCreatedModel
 {
-    public required Guid OrderId { get; set; }
+    [JsonPropertyName("orderId")]
+    public required string OrderId { get; set; }
+	[JsonPropertyName("products")]
 	public required List<ProductModel> Products { get; set; }
-    public required List<FeeModel> Fees { get; set; }
+	[JsonPropertyName("fees")]
+	public required List<FeeModel> Fees { get; set; }
 }

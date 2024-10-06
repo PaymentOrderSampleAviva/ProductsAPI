@@ -8,7 +8,11 @@ namespace ProductsAPI.Profiles
 	{
         public OrderItemProfile()
         {
-            CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(x => x.Name, y => y.MapFrom(z => z.Product.Name))
+                .ForMember(x => x.Details, y => y.MapFrom(z => z.Product.Details));
+
+			CreateMap<OrderItemDto, OrderItem>();
 		}
     }
 }

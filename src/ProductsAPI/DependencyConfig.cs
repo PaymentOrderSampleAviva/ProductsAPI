@@ -2,6 +2,9 @@
 using ProductsAPI.AppServices;
 using ProductsAPI.AppServices.Abstractions;
 using ProductsAPI.Data;
+using ProductsAPI.PaymentProcessors;
+using ProductsAPI.PaymentProcessors.Abstractions;
+using ProductsAPI.PaymentProcessors.Providers;
 using ProductsAPI.Repositories;
 using System.Reflection;
 
@@ -20,6 +23,7 @@ public static class DependencyConfig
 	{
 		services.AddAppServices();
 		services.AddRepositories();
+		services.AddPaymentServices();
 		services.AddDefaultServices();
 		return services;
 	}
@@ -28,6 +32,8 @@ public static class DependencyConfig
 	{
 		services.AddTransient<IProductsAppService, ProductsAppService>();
 		services.AddTransient<IOrderAppService, OrderAppService>();
+		services.AddTransient<IPaymentMethodSelector, PaymentMethodSelector>();
+		services.AddTransient<ITdcPaymentProcessorSelector, TdcPaymentProcessorSelector>();
 		return services;
 	}
 
@@ -40,9 +46,45 @@ public static class DependencyConfig
 
 	private static IServiceCollection AddInMemoryDataStorage(this IServiceCollection services)
 	{
-		services.AddDbContext<ApplicationDbContext>(options => {
+		services.AddDbContext<ApplicationDbContext>(options =>
+		{
 			options.UseInMemoryDatabase("ProductsDb-Dev");
 		});
+		return services;
+	}
+
+	private static IServiceCollection AddPaymentServices(this IServiceCollection services)
+	{
+		services.AddSingleton<CashPaymentProcessor>();
+		services.AddSingleton<TransferPaymentProcessor>();
+		services.AddSingleton<TdcPaymentProcessor>();
+
+		services.AddHttpClient<PagaFacilPaymentProcessor>(
+		client =>
+		{
+			// Set the base address of the named client.
+			client.BaseAddress = new Uri("https://app-paga-chg-aviva.azurewebsites.net/");
+
+			// Add a user-agent default request header.
+			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
+		});
+
+		services.AddHttpClient<CazaPagosPaymentProcessor>(
+		client =>
+		{
+			// Set the base address of the named client.
+			client.BaseAddress = new Uri("https://app-caza-chg-aviva.azurewebsites.net/");
+
+			// Add a user-agent default request header.
+			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
+		});
+
+		// Card Fee providers
+		services.AddSingleton(new TdcFeeProvider (minAmount: 0, feePercent: 1, processorType: typeof(PagaFacilPaymentProcessor)));
+		services.AddSingleton(new TdcFeeProvider (minAmount: 0, feePercent: 2, processorType: typeof(CazaPagosPaymentProcessor)));
+		services.AddSingleton(new TdcFeeProvider (minAmount: 1500, feePercent: 1.5, processorType: typeof(CazaPagosPaymentProcessor)));
+		services.AddSingleton(new TdcFeeProvider (minAmount: 5000, feePercent: 0.5, processorType: typeof(CazaPagosPaymentProcessor)));
+
 		return services;
 	}
 

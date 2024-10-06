@@ -39,13 +39,13 @@ public class TransferPaymentProcessor : PaymentProcessorBase
 
 		var response = new OrderCreatedModel
 		{
-			OrderId = Guid.NewGuid(),
+			OrderId = Guid.NewGuid().ToString(),
 			Products = new List<ProductModel>(orderModel.Products),
 			Fees = new List<FeeModel>(GetTransactionFees(orderModel.GetTotalAmount()))
 		};
 
 		_logger.LogInformation($"Cash transaction completed for order id: {response.OrderId}, total fee: {response.Fees.Sum(x => x.Amount)}");
-		return await Task.FromResult(response);
+		return response;
 	}
 
 	private IReadOnlyList<FeeModel> GetTransactionFees(double totalAmount)

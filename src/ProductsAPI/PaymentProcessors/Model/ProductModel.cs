@@ -1,8 +1,12 @@
-﻿namespace ProductsAPI.PaymentProcessors.Model
+﻿using System.Text.Json.Serialization;
+
+namespace ProductsAPI.PaymentProcessors.Model
 {
 	public class ProductModel
 	{
-        public required string Name { get; set; }
-        public double UnitPrice { get; set; }
+		[JsonPropertyName("name")]
+		public required string Name { get; set; }
+		[JsonPropertyName("unitPrice")]
+		public double UnitPrice { get; set; }
 	}
 }

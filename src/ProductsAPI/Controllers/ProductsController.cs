@@ -15,7 +15,7 @@ public class ProductsController(IProductsAppService productsAppService, ILogger<
 	[Produces("application/json")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-	[ProducesDefaultResponseType(typeof(List<ProductResponse>))]
+	[ProducesDefaultResponseType(typeof(List<ProductDto>))]
 	public async Task<IActionResult> GetProductsAsync()
 	{
 		try

@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace ProductsAPI
 {
 	public class Program
@@ -9,7 +11,8 @@ namespace ProductsAPI
 
 			// Add services to the container.
 
-			builder.Services.AddControllers();
+			builder.Services.AddControllers().AddJsonOptions(options =>
+				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 			builder.Services.AddCoreDependenciesDev();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();

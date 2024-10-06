@@ -13,6 +13,7 @@ public class PaymentMethodSelector(IServiceProvider serviceProvider) : IPaymentM
         var type = method.GetPaymentProcessorType();
         type.ThrowIfNull();
 
-        return _serviceProvider.GetService(type) as IPaymentProcessor;
+        var processor = _serviceProvider.GetService(type) as IPaymentProcessor;
+        return processor;
     }
 }

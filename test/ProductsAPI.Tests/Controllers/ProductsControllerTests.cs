@@ -29,7 +29,7 @@ public class ProductsControllerTests
 
         // act
         var okResult = await controller.GetProductsAsync() as OkObjectResult;
-        var data = okResult?.Value as List<ProductResponse>;
+        var data = okResult?.Value as List<ProductDto>;
 
 		// assert
 		okResult.Should().NotBeNull();

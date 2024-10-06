@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ProductsAPI.DTOs;
-using ProductsAPI.Extensions;
+using ProductsAPI.Models;
 using ProductsAPI.PaymentProcessors.Model;
 
 namespace ProductsAPI.Profiles
@@ -10,9 +10,11 @@ namespace ProductsAPI.Profiles
         public PaymentModelsProfile()
         {
             CreateMap<CreateOrderDto, CreateOrderModel>()
-                .ForMember(x => x.Method, y => y.MapFrom(z => z.Method.GetLocalizedValue()));
+                .ForMember(x => x.Method, y => y.MapFrom(z => z.Method));
 
             CreateMap<OrderItemDto, ProductModel>();
+
+            CreateMap<FeeModel, OrderFee>();
         }
     }
 }

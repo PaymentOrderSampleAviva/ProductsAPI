@@ -2,9 +2,9 @@
 
 namespace ProductsAPI.DTOs;
 
-public class ProductResponse
+public class ProductDto
 {
-	public int Id { get; set; }
+	public int ProductId { get; set; }
 	public required string Name { get; set; }
 	public string? Details { get; set; }
     public int StatusId { get; set; }

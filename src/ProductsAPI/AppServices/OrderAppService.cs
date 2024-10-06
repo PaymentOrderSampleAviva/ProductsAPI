@@ -31,7 +31,6 @@ public class OrderAppService (IOrdersRepository ordersRepository,
 
 		// Save order to db
 		var orderEntity = _mapper.Map<Order>(request);
-		orderEntity.Id = Random.Shared.Next(1000000); // for in memory db only.
 		await _ordersRepository.AddAsync(orderEntity);
 
 		try
@@ -44,7 +43,8 @@ public class OrderAppService (IOrdersRepository ordersRepository,
 			var orderCreated = await paymentProcessor.CreateOrderAsync(createOrderModel);
 
 			var orderFeeds = _mapper.Map<List<OrderFee>>(orderCreated.Fees);
-			orderEntity.Confirm(orderCreated.OrderId.ToString(), orderFeeds);
+			orderEntity.Confirm(orderCreated.OrderId, orderFeeds);
+			await _ordersRepository.UpdateAsync(orderEntity);
 
 			return _mapper.Map<OrderDto>(orderEntity);
 		}

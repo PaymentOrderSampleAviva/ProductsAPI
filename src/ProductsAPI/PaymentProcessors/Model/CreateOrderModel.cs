@@ -1,9 +1,13 @@
-﻿namespace ProductsAPI.PaymentProcessors.Model;
+﻿using System.Text.Json.Serialization;
+
+namespace ProductsAPI.PaymentProcessors.Model;
 
 public class CreateOrderModel
 {
+    [JsonPropertyName("method")]
     public required string Method { get; set; }
-    public required List<ProductModel> Products { get; set; }
+	[JsonPropertyName("products")]
+	public required List<ProductModel> Products { get; set; }
 
     public double GetTotalAmount() => Products?.Sum(x => x.UnitPrice) ?? 0;
 }
