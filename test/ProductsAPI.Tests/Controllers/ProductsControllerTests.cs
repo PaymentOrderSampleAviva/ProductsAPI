@@ -21,7 +21,7 @@ public class ProductsControllerTests
     }
 
     [TestMethod]
-	public async Task GetAllProductsShouldReturnAllItems()
+	public async Task GetProductsShouldReturnAllItems()
 	{
         //arrange
         appServiceMock.Setup(m => m.ListAllAsync()).Returns(() => Task.FromResult(DataSeedClass.GetProductResponseDataSeed()));
