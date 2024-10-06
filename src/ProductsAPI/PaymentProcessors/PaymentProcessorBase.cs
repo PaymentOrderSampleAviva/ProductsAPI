@@ -1,4 +1,5 @@
-﻿using ProductsAPI.PaymentProcessors.Model;
+﻿using ProductsAPI.PaymentProcessors.Abstractions;
+using ProductsAPI.PaymentProcessors.Model;
 
 namespace ProductsAPI.PaymentProcessors;
 

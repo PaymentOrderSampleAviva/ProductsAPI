@@ -1,4 +1,6 @@
 ﻿using ProductsAPI.PaymentProcessors.Model;
+using ProductsAPI.PaymentProcessors.Providers;
+using ProductsAPI.PaymentProcessors.Providers.Builder;
 using Throw;
 
 namespace ProductsAPI.PaymentProcessors;
@@ -6,15 +8,15 @@ namespace ProductsAPI.PaymentProcessors;
 public class TransferPaymentProcessor : PaymentProcessorBase
 {
 	private readonly ILogger _logger;
-	private readonly IEnumerable<FeedProvider> _feedProviders;
+	private readonly IEnumerable<FeeProvider> _feedProviders;
 
-    public TransferPaymentProcessor(ILogger<CashPaymentProcesor> logger, IEnumerable<FeedProvider> feeProviders)
+    public TransferPaymentProcessor(ILogger<CashPaymentProcessor> logger, IEnumerable<FeeProvider> feeProviders)
 	{
 		_logger = logger;
 		_feedProviders = feeProviders;
 	}
 
-    public TransferPaymentProcessor(ILogger<CashPaymentProcesor> logger)
+    public TransferPaymentProcessor(ILogger<CashPaymentProcessor> logger)
 		: this(logger, new TranserFeesProviderBuilder().WithDefault().Build())
 	{
 		
@@ -39,7 +41,7 @@ public class TransferPaymentProcessor : PaymentProcessorBase
 		{
 			OrderId = Guid.NewGuid(),
 			Products = new List<ProductModel>(orderModel.Products),
-			Fees = new List<FeeModel>()
+			Fees = new List<FeeModel>(GetTransactionFees(orderModel.GetTotalAmount()))
 		};
 
 		_logger.LogInformation($"Cash transaction completed for order id: {response.OrderId}, total fee: {response.Fees.Sum(x => x.Amount)}");
@@ -73,41 +75,4 @@ public class TransferPaymentProcessor : PaymentProcessorBase
 
 		return provider?.FeeCalculator;
 	}
-}
-
-public class FeedProvider (double minAmount, FeeCalculator feeCalculator )
-{
-	public  double MinAmount { get; init; } = minAmount;
-	public FeeCalculator FeeCalculator { get; init; } = feeCalculator;
-
-}
-
-public class TranserFeesProviderBuilder
-{
-	private readonly ICollection<FeedProvider> _feedProviders = new List<FeedProvider>();
-	private bool defaultFees = false;
-
-	public TranserFeesProviderBuilder WithDefault()
-	{
-		if (defaultFees) return this;
-
-		_feedProviders.Add(new(0, new FixedFeeCalculator(5)));
-		_feedProviders.Add(new(500, new PercentFeeCalculator(2.5)));
-		_feedProviders.Add(new(1000, new PercentFeeCalculator(2)));
-
-		defaultFees = true;
-
-		return this;
-	}
-
-	public TranserFeesProviderBuilder Add(double minAmount, FeeCalculator feeCalculator)
-	{
-		minAmount.Throw().IfLessThan(0);
-		feeCalculator.ThrowIfNull();
-
-		_feedProviders.Add(new(minAmount, feeCalculator));
-		return this;
-	}
-
-	public IEnumerable<FeedProvider> Build() => _feedProviders;
 }

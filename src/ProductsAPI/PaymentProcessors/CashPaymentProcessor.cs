@@ -3,7 +3,7 @@ using Throw;
 
 namespace ProductsAPI.PaymentProcessors;
 
-public class CashPaymentProcesor (ILogger<CashPaymentProcesor> logger) : PaymentProcessorBase
+public class CashPaymentProcessor (ILogger<CashPaymentProcessor> logger) : PaymentProcessorBase
 {
 	private const int TRANSACTION_FEE = 15;
 	private readonly ILogger _logger = logger;

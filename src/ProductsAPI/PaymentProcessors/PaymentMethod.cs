@@ -2,13 +2,13 @@
 
 namespace ProductsAPI.PaymentProcessors
 {
-	public enum PaymentMethod
+    public enum PaymentMethod
 	{
-		[PaymentProcessorType(ProcessorType = typeof(ICashPaymentProcessor))]
+		[PaymentProcessorType(ProcessorType = typeof(CashPaymentProcessor))]
 		Cash,
-		[PaymentProcessorType(ProcessorType = typeof(ITdcPaymentProcessor))]
+		[PaymentProcessorType(ProcessorType = typeof(TdcPaymentProcessor))]
 		TDC,
-		[PaymentProcessorType(ProcessorType = typeof(ITransferPaymentProcessor))]
+		[PaymentProcessorType(ProcessorType = typeof(TransferPaymentProcessor))]
 		Transfer
 	}
 }

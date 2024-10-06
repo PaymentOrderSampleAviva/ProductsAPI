@@ -1,6 +1,7 @@
 ﻿using ProductsAPI.DataContracts;
 using ProductsAPI.Extensions;
 using ProductsAPI.PaymentProcessors;
+using ProductsAPI.PaymentProcessors.Abstractions;
 using Throw;
 
 namespace ProductsAPI.AppServices;
