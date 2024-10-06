@@ -9,9 +9,9 @@ using Throw;
 
 namespace ProductsAPI.AppServices;
 
-public class OrderAppService (IOrdersRepository ordersRepository,
+public class OrdersAppService (IOrdersRepository ordersRepository,
 	IPaymentMethodSelector paymentMethodSelector,
-	IMapper mapper, ILogger<OrderAppService> logger) : IOrderAppService
+	IMapper mapper, ILogger<OrdersAppService> logger) : IOrdersAppService
 {
 	private readonly IOrdersRepository _ordersRepository = ordersRepository;
 	private readonly IPaymentMethodSelector _paymentMethodSelector = paymentMethodSelector;

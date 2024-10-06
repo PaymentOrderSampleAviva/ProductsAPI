@@ -31,7 +31,7 @@ public static class DependencyConfig
 	private static IServiceCollection AddAppServices(this IServiceCollection services)
 	{
 		services.AddTransient<IProductsAppService, ProductsAppService>();
-		services.AddTransient<IOrderAppService, OrderAppService>();
+		services.AddTransient<IOrdersAppService, OrdersAppService>();
 		services.AddTransient<IPaymentMethodSelector, PaymentMethodSelector>();
 		services.AddTransient<ITdcPaymentProcessorSelector, TdcPaymentProcessorSelector>();
 		return services;

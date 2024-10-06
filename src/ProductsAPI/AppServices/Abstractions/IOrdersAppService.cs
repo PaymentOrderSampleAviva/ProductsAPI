@@ -2,7 +2,7 @@
 
 namespace ProductsAPI.AppServices.Abstractions
 {
-    public interface IOrderAppService
+    public interface IOrdersAppService
     {
 		Task<IReadOnlyList<OrderDto>> ListOrdersAsync();
 

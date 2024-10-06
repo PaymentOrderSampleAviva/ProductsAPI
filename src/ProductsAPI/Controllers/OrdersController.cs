@@ -6,9 +6,9 @@ namespace ProductsAPI.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class OrdersController(IOrderAppService orderAppService, ILogger<OrdersController> logger) : ControllerBase
+	public class OrdersController(IOrdersAppService orderAppService, ILogger<OrdersController> logger) : ControllerBase
 	{
-		private readonly IOrderAppService _orderAppService = orderAppService;
+		private readonly IOrdersAppService _orderAppService = orderAppService;
 		private readonly ILogger _logger = logger;
 
 		[HttpGet]
