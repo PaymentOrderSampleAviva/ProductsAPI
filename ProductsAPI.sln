@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{559FD774-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsAPI.Tests", "test\ProductsAPI.Tests\ProductsAPI.Tests.csproj", "{B6768CDD-2ACD-488E-9D4A-34E8A5BA6F58}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{397FCB52-AC6E-4C9B-BC8A-0901F6B36402}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{19EC2F1C-8511-411F-AAF5-ADC24AD8AFC2} = {397FCB52-AC6E-4C9B-BC8A-0901F6B36402}
 		{B6768CDD-2ACD-488E-9D4A-34E8A5BA6F58} = {559FD774-DCE6-4C6B-8A3C-2A7C63C60B5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
