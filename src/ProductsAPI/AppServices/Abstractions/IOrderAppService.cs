@@ -1,9 +1,9 @@
-﻿using ProductsAPI.DataContracts;
+﻿using ProductsAPI.DTOs;
 
 namespace ProductsAPI.AppServices.Abstractions
 {
     public interface IOrderAppService
     {
-        Task<object> CreateOrderAsync(CreateOrderRequest request);
+        Task<object> CreateOrderAsync(CreateOrderDto request);
     }
 }

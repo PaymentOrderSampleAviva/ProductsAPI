@@ -1,6 +1,6 @@
 ﻿using ProductsAPI.Models;
 
-namespace ProductsAPI.DataContracts;
+namespace ProductsAPI.DTOs;
 
 public class ProductResponse
 {

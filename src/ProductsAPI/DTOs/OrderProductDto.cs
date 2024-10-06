@@ -1,6 +1,6 @@
-﻿namespace ProductsAPI.DataContracts
+﻿namespace ProductsAPI.DTOs
 {
-	public class OrderProductRequest
+	public class OrderProductDto
 	{
         public int Id { get; set; }
         public double UnitPrice { get; set; }

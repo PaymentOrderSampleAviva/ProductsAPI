@@ -1,4 +1,4 @@
-﻿using ProductsAPI.DataContracts;
+﻿using ProductsAPI.DTOs;
 
 namespace ProductsAPI.AppServices.Abstractions
 {

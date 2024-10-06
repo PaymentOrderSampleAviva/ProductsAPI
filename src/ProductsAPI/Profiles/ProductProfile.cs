@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ProductsAPI.DataContracts;
+using ProductsAPI.DTOs;
 using ProductsAPI.Extensions;
 using ProductsAPI.Models;
 

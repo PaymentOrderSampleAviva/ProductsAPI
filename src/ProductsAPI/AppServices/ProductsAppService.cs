@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ProductsAPI.AppServices.Abstractions;
-using ProductsAPI.DataContracts;
+using ProductsAPI.DTOs;
 using ProductsAPI.Repositories;
 
 namespace ProductsAPI.AppServices;

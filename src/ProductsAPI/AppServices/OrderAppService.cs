@@ -1,32 +1,26 @@
-﻿using ProductsAPI.AppServices.Abstractions;
-using ProductsAPI.DataContracts;
-using ProductsAPI.Extensions;
-using ProductsAPI.PaymentProcessors;
+﻿using AutoMapper;
+using ProductsAPI.AppServices.Abstractions;
+using ProductsAPI.DTOs;
 using ProductsAPI.PaymentProcessors.Abstractions;
+using ProductsAPI.PaymentProcessors.Model;
 using Throw;
 
 namespace ProductsAPI.AppServices;
 
-public class OrderAppService (IServiceProvider serviceProvider) : IOrderAppService
+public class OrderAppService (IPaymentMethodSelector paymentMethodSelector, IMapper mapper) : IOrderAppService
 {
-	private readonly IServiceProvider _serviceProvider = serviceProvider;
+	private readonly IPaymentMethodSelector _paymentMethodSelector = paymentMethodSelector;
+	private readonly IMapper _mapper = mapper;
 
-	public async Task<object> CreateOrderAsync(CreateOrderRequest request)
+	public async Task<object> CreateOrderAsync(CreateOrderDto request)
 	{
 		request.ThrowIfNull();
 		request.Products.Throw().IfCountLessThan(1);
 
-		var paymentProcessor = GetPaymentProcessor(request.Method);
+		var createOrderModel = _mapper.Map<CreateOrderModel>(request);
+		var paymentProcessor = _paymentMethodSelector.Select(request.Method);		
+		var response = await paymentProcessor.CreateOrderAsync(createOrderModel);
 
-		throw new NotImplementedException();
-	}
-
-	private IPaymentProcessor? GetPaymentProcessor(PaymentMethod method)
-	{
-		var type = method.GetPaymentProcessorType();
-		type.ThrowIfNull();
-
-		return _serviceProvider.GetService(type) as IPaymentProcessor;
-		
+		return _mapper.Map<OrderCreatedDto>(response);
 	}
 }

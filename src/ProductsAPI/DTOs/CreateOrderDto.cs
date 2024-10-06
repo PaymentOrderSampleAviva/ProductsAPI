@@ -1,11 +1,11 @@
 ﻿using ProductsAPI.PaymentProcessors;
 
-namespace ProductsAPI.DataContracts
+namespace ProductsAPI.DTOs
 {
-	public class CreateOrderRequest
+	public class CreateOrderDto
 	{
         public required PaymentMethod Method { get; set; }
-        public required List<OrderProductRequest> Products { get; set; }
+        public required List<OrderProductDto> Products { get; set; }
 
         public double GetTotalAmount() => Products.Sum(p => p.UnitPrice);
     }

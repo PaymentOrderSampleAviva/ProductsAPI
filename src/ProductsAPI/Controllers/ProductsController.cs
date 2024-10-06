@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductsAPI.AppServices.Abstractions;
-using ProductsAPI.DataContracts;
+using ProductsAPI.DTOs;
 
 namespace ProductsAPI.Controllers;
 
