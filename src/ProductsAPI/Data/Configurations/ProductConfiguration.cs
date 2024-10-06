@@ -4,13 +4,15 @@ using ProductsAPI.Models;
 
 namespace ProductsAPI.Data.Configurations;
 
-public class ProductTypeConfiguration : IEntityTypeConfiguration<Product>
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
 	public void Configure(EntityTypeBuilder<Product> builder)
 	{
 		builder.HasKey(e => e.Id);
 		builder.Property(e => e.Name).HasMaxLength(100).IsRequired();
 		builder.Property(e => e.Details).HasMaxLength(250);
+
+		builder.HasMany(e => e.OrderItems).WithOne(e => e.Product);
 
 		// Data seed
 		builder.HasData(GetDataSeed());

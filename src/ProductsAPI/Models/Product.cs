@@ -6,4 +6,5 @@ public class Product : EntityBase
 	public string? Details { get; set; }
 	public ProductStatus Status { get; set; } = ProductStatus.NotAvailable;
 	public double UnitPrice { get; set; } = 0;
+    public ICollection<OrderItem> OrderItems { get; set; }
 }
