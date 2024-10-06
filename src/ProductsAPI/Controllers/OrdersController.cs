@@ -69,7 +69,7 @@ namespace ProductsAPI.Controllers
 			try
 			{
 				var result = await _orderAppService.CancelOrderAsync(orderDto.OrderId, orderDto.Reason ?? string.Empty);
-				return Ok(string.Empty, result);
+				return Ok(result);
 			}
 			catch (ArgumentNullException)
 			{
