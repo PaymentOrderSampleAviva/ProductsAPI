@@ -6,8 +6,8 @@ namespace ProductsAPI.AppServices.Abstractions
     {
 		Task<IReadOnlyList<OrderDto>> ListOrdersAsync();
 
-		Task<OrderViewDto> CreateOrderAsync(CreateOrderDto request);
-        Task<OrderViewDto> CancelOrderAsync(int orderId, string reason);
+		Task<OrderDto> CreateOrderAsync(CreateOrderDto request);
+        Task<OrderDto> CancelOrderAsync(int orderId, string reason);
 
 	}
 }
