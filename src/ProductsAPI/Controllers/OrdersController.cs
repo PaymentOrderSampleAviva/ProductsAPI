@@ -31,7 +31,7 @@ namespace ProductsAPI.Controllers
 			return StatusCode(500);
 		}
 
-		[HttpPost]
+		[HttpPost("Create")]
 		[Produces("application/json")]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -59,7 +59,7 @@ namespace ProductsAPI.Controllers
 			return StatusCode(500);
 		}
 
-		[HttpPost]
+		[HttpPost("Cancel")]
 		[Produces("application/json")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
