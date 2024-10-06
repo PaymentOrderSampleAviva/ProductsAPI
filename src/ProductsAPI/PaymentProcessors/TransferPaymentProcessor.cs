@@ -1,0 +1,52 @@
+﻿using ProductsAPI.PaymentProcessors.Model;
+using Throw;
+
+namespace ProductsAPI.PaymentProcessors
+{
+	public class TransferPaymentProcessor : PaymentProcessorBase
+	{
+		private const int TRANSACTION_FEED = 15;
+		private readonly ILogger _logger;
+		private readonly IReadOnlyDictionary<double, double> _applicableFees = new Dictionary<double, double>();
+
+        public TransferPaymentProcessor(ILogger<CashPaymentProcesor> logger)
+		{
+            _logger = logger;
+			_applicableFees = new Dictionary<double, double>()
+			{
+				(500, )
+			}
+		}
+
+		private void FillApplicableFees()
+		{
+			_applicableFees.
+		}
+
+		public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
+		{
+			try
+			{
+				orderModel.ThrowIfNull();
+				orderModel.Products.Throw().IfCountLessThan(1);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Payment can't be processed due to an exception, check the exception object for more info.");
+				throw new ProcessPaymentValidationException("A validation exception accours", ex);
+			}
+
+			_logger.LogInformation($"Cash transaction started, total amount: {orderModel.Products.Sum(x => x.UnitPrice)}");
+
+			var response = new OrderCreatedModel
+			{
+				OrderId = Guid.NewGuid(),
+				Products = new List<ProductModel>(orderModel.Products),
+				Fees = new List<FeeModel>(GetTransactionFees())
+			};
+
+			_logger.LogInformation($"Cash transaction completed for order id: {response.OrderId}, total fee: {response.Fees.Sum(x => x.Amount)}");
+			return await Task.FromResult(response);
+		}
+	}
+}
