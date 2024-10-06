@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductsAPI.AppServices;
+using ProductsAPI.AppServices.Abstractions;
 using ProductsAPI.Data;
 using ProductsAPI.Repositories;
 using System.Reflection;

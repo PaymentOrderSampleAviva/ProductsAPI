@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductsAPI.AppServices;
+using ProductsAPI.AppServices.Abstractions;
 using ProductsAPI.DataContracts;
 
 namespace ProductsAPI.Controllers;

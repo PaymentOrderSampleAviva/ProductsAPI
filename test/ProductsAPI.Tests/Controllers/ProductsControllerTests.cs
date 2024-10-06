@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using FluentAssertions;
-using ProductsAPI.AppServices;
 using ProductsAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ProductsAPI.DataContracts;
+using ProductsAPI.AppServices.Abstractions;
 
 namespace ProductsAPI.Tests.Controllers;
 

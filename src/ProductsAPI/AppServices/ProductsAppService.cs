@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProductsAPI.AppServices.Abstractions;
 using ProductsAPI.DataContracts;
 using ProductsAPI.Repositories;
 
