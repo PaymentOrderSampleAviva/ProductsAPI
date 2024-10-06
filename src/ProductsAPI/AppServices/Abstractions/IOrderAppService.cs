@@ -4,6 +4,10 @@ namespace ProductsAPI.AppServices.Abstractions
 {
     public interface IOrderAppService
     {
-        Task<object> CreateOrderAsync(CreateOrderDto request);
-    }
+		Task<IReadOnlyList<OrderDto>> ListOrdersAsync();
+
+		Task<OrderViewDto> CreateOrderAsync(CreateOrderDto request);
+        Task<OrderViewDto> CancelOrderAsync(int orderId, string reason);
+
+	}
 }

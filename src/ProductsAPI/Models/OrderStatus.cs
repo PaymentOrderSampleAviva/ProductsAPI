@@ -2,6 +2,7 @@
 {
 	public enum OrderStatus
 	{
+		Processing,
 		Confirmed,
 		Cancelled,
 		Reverted
