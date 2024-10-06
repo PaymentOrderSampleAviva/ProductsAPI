@@ -5,7 +5,7 @@ namespace ProductsAPI.PaymentProcessors;
 
 public class CashPaymentProcesor (ILogger<CashPaymentProcesor> logger) : PaymentProcessorBase
 {
-	private const int TRANSACTION_FEED = 15;
+	private const int TRANSACTION_FEE = 15;
 	private readonly ILogger _logger = logger;
 
 	public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
@@ -38,9 +38,7 @@ public class CashPaymentProcesor (ILogger<CashPaymentProcesor> logger) : Payment
 	{
 		return new List<FeeModel>
 		{
-			GetTransactionFee()
+			new FeeModel { Name = "Transaction fee", Amount = TRANSACTION_FEE }
 		};
 	}
-
-	private FeeModel GetTransactionFee() => new FeeModel { Name = "Transaction feed", Amount = TRANSACTION_FEED };
 }

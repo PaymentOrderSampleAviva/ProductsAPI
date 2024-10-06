@@ -1,21 +1,15 @@
-﻿using Throw;
+﻿namespace ProductsAPI.PaymentProcessors;
 
-namespace ProductsAPI.PaymentProcessors
+public class FixedFeeCalculator : FeeCalculator
 {
-	public class FixedFeeCalculator : FeeCalculator
+	public FixedFeeCalculator(double fee)
+	: base(fee)
 	{
-        public FixedFeeCalculator(double minAmount, double maxAmount, double fixedFee)
-            : base(minAmount, maxAmount)
-		{
-			fixedFee.Throw().IfLessThan(0);
-            FixedFee = fixedFee;
-        }
 
-        public double FixedFee { get; init; }
+	}
 
-        public override double CalculateFee(double amount)
-		{
-			return FixedFee;
-		}
+	public override double CalculateFee(double amount)
+	{
+		return Fee;
 	}
 }

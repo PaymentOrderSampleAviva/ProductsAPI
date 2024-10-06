@@ -4,16 +4,13 @@ namespace ProductsAPI.PaymentProcessors;
 
 public abstract class FeeCalculator
 {
-	protected FeeCalculator(double minAmount, double maxAmount)
+	public FeeCalculator(double fee)
 	{
-		minAmount.Throw().IfGreaterThan(maxAmount);
-
-		MinAmount = minAmount;
-		MaxAmount = maxAmount;
+		fee.Throw().IfLessThan(0);
+		Fee = fee;
 	}
 
-	public double MinAmount { get; init; }
-	public double MaxAmount { get; init; }
+	public double Fee { get; init; }
 
 	public abstract double CalculateFee(double amount);
 

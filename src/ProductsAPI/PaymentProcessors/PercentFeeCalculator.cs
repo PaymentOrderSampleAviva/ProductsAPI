@@ -1,20 +1,15 @@
-﻿using Throw;
-
-namespace ProductsAPI.PaymentProcessors;
+﻿namespace ProductsAPI.PaymentProcessors;
 
 public class PercentFeeCalculator : FeeCalculator
 {
-	public PercentFeeCalculator(double minAmount, double maxAmount, double percent)
-	: base(minAmount, maxAmount)
+	public PercentFeeCalculator(double fee)
+		: base(fee)
 	{
-		percent.Throw().IfLessThan(0);
-		Percent = percent;
-	}
 
-	public double Percent { get; init; }
+	}
 
 	public override double CalculateFee(double amount)
 	{
-		return amount * (Percent / 100);
+		return amount * (Fee / 100);
 	}
 }
