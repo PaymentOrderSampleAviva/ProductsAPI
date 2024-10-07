@@ -47,9 +47,9 @@ namespace ProductsAPI.Controllers
 			{
 				return BadRequest("Validation exception occurs, check your payload.");
 			}
-			catch (ArgumentException)
+			catch (ArgumentException ex)
 			{
-				return BadRequest("Validation exception occurs, check your payload.");
+				return BadRequest(ex.Message);
 			}
 			catch (Exception ex)
 			{
@@ -75,9 +75,9 @@ namespace ProductsAPI.Controllers
 			{
 				return BadRequest("Validation exception occurs, check your payload.");
 			}
-			catch (ArgumentException)
+			catch (ArgumentException ex)
 			{
-				return BadRequest("Validation exception occurs, check your payload.");
+				return BadRequest(ex.Message);
 			}
 			catch (Exception ex)
 			{

@@ -50,7 +50,7 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 		}
 		catch (Exception ex)
 		{
-			var orderDto = await CancelOrderAsync(orderEntity.Id, "Exception occurs processing payment.", cancellationToken);
+			var orderDto = await CancelOrderAsync(orderEntity.Id, "Exception occurs processing payment."); //cancellation token is not used here because we want to cancel the exinting order.
 			_logger.LogError(ex, "An exception occurs trying to process the payment", [orderDto.Id]);
 			throw;
 		}
