@@ -7,19 +7,17 @@ namespace ProductsAPI.Data.Repositories
 {
     public class OrdersRepository(ApplicationDbContext dbContext) : IOrdersRepository
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
-
         public async Task<Order> AddAsync(Order order, CancellationToken cancellationToken = default)
         {
             order.ThrowIfNull();
-            _dbContext.Orders.Add(order);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.Orders.Add(order);
+            await dbContext.SaveChangesAsync(cancellationToken);
             return order;
         }
 
         public async Task<IReadOnlyList<Order>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Orders
+            return await dbContext.Orders
                 .Include(e => e.Fees)
                 .Include(e => e.Items)
                 .ThenInclude(e => e.Product)
@@ -29,7 +27,7 @@ namespace ProductsAPI.Data.Repositories
 
         public async Task<Order?> GetAsync(int id, bool enableTraking = false, CancellationToken cancellationToken = default)
         {
-            var query = _dbContext.Orders
+            var query = dbContext.Orders
                 .Where(o => o.Id == id)
                 .Include(e => e.Fees)
                 .Include(e => e.Items)
@@ -40,8 +38,8 @@ namespace ProductsAPI.Data.Repositories
 
         public async Task<Order> UpdateAsync(Order order, CancellationToken cancellationToken = default)
         {
-            _dbContext.Orders.Update(order);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.Orders.Update(order);
+            await dbContext.SaveChangesAsync(cancellationToken);
             return order;
         }
     }
