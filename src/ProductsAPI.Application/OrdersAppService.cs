@@ -28,9 +28,9 @@ public class OrdersAppService(IOrdersRepository ordersRepository,
 
         // check product availability
         var productIDs = request.Products.Select(r => r.ProductId).ToList();
-        var availableProductsCount = await productsRepository.GetAvailableCountAsync(productIDs);
+        var availableProductsCount = await productsRepository.GetAvailableCountAsync(productIDs, cancellationToken);
 
-		productIDs.Throw(() => new ArgumentException("The product list should not contain not available products")).IfCountGreaterThan(availableProductsCount);
+		productIDs.Throw(() => new ArgumentException("\"The product list should contain only available products\"")).IfCountGreaterThan(availableProductsCount);
 
         // Save order to db
         var orderEntity = mapper.Map<Order>(request);
