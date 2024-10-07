@@ -20,6 +20,7 @@ public class Order
 	{
 		Status.Throw().IfGreaterThan(OrderStatus.Confirmed);
 		CancelReason = reason;
+		Status = OrderStatus.Cancelled;
 		UpdatedDate = DateTime.UtcNow;
 	}
 
