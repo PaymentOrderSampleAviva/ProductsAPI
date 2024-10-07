@@ -20,7 +20,7 @@ public class ProductsController(IProductsAppService productsAppService, ILogger<
 	{
 		try
 		{
-			var result = await _productsAppService.ListAllAsync();
+			var result = await _productsAppService.ListProductsAsync();
 			return Ok(result);
 		}
 		catch (Exception ex)

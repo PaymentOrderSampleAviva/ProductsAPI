@@ -4,6 +4,6 @@ namespace ProductsAPI.AppServices.Abstractions
 {
     public interface IProductsAppService
     {
-        Task<IReadOnlyList<ProductDto>> ListAllAsync(CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<ProductDto>> ListProductsAsync(CancellationToken cancellationToken = default);
     }
 }
