@@ -8,8 +8,6 @@ namespace ProductsAPI.Controllers;
 [Route("[controller]")]
 public class ProductsController(IProductsAppService productsAppService, ILogger<ProductsController> logger) : ControllerBase
 {
-	private readonly IProductsAppService _productsAppService = productsAppService;
-	private readonly ILogger<ProductsController> _logger = logger;
 
 	[HttpGet]
 	[Produces("application/json")]
@@ -20,12 +18,12 @@ public class ProductsController(IProductsAppService productsAppService, ILogger<
 	{
 		try
 		{
-			var result = await _productsAppService.GetProductsAsync();
+			var result = await productsAppService.GetProductsAsync();
 			return Ok(result);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "An exception was thrown getting the products list.");
+			logger.LogError(ex, "An exception was thrown getting the products list.");
 		}
 
 		return StatusCode(500);
