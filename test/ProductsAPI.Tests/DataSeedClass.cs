@@ -1,4 +1,4 @@
-﻿using ProductsAPI.DTOs;
+﻿using ProductsAPI.Application.DTOs;
 
 namespace ProductsAPI.Tests;
 

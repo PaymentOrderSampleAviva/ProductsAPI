@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductsAPI.AppServices.Abstractions;
-using ProductsAPI.DTOs;
+using ProductsAPI.Application.Abstractions;
+using ProductsAPI.Application.DTOs;
 
 namespace ProductsAPI.Controllers;
 

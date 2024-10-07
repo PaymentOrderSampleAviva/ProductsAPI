@@ -1,0 +1,41 @@
+﻿using Microsoft.Extensions.Logging;
+using ProductsAPI.PaymentsGateway.Model;
+using System.Net.Http.Json;
+using System.Text.Json;
+
+namespace ProductsAPI.PaymentsGateway
+{
+	public class ExternalPaymentProcessorBase(HttpClient httpClient, ILogger logger) : PaymentProcessorBase, IDisposable
+	{
+		public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel, CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				orderModel.Method = TranslatePaymentMethod(orderModel.Method);
+				var httpResponse = await httpClient.PostAsJsonAsync("/Order", orderModel, cancellationToken);
+
+				if (httpResponse != null && httpResponse.IsSuccessStatusCode)
+				{
+					//var payload = await httpResponse.Content.ReadAsStringAsync();
+					var ordedCreated = await JsonSerializer.DeserializeAsync<OrderCreatedModel>(await httpResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = false }, cancellationToken);
+					return ordedCreated;
+				}
+				else
+				{
+					logger.LogError($"Call to external api process order ends with estatus code: {httpResponse?.StatusCode}", [orderModel]);
+				}
+			}
+			catch (Exception ex)
+			{
+				logger.LogError(ex.Message);
+				throw new PaymentProcessException(ex);
+			}
+
+			throw new PaymentProcessException();
+		}
+
+		protected virtual string TranslatePaymentMethod(string method) => method;
+
+		public void Dispose() => httpClient?.Dispose();
+	}
+}

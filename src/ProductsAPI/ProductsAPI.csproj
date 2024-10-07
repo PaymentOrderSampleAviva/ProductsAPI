@@ -10,14 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.9.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Throw" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductsAPI.Application\ProductsAPI.Application.csproj" />
+    <ProjectReference Include="..\ProductsAPI.Data\ProductsAPI.Data.csproj" />
+    <ProjectReference Include="..\ProductsAPI.Domain\ProductsAPI.Domain.csproj" />
+    <ProjectReference Include="..\ProductsAPI.PaymentsGateway\ProductsAPI.PaymentsGateway.csproj" />
   </ItemGroup>
 
   <ItemGroup>

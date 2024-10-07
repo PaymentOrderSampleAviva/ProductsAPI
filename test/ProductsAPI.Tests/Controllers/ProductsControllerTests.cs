@@ -3,8 +3,8 @@ using Moq;
 using FluentAssertions;
 using ProductsAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using ProductsAPI.DTOs;
-using ProductsAPI.AppServices.Abstractions;
+using ProductsAPI.Application.DTOs;
+using ProductsAPI.Application.Abstractions;
 
 namespace ProductsAPI.Tests.Controllers;
 
