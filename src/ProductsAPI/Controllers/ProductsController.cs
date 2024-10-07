@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductsAPI.AppServices;
-using ProductsAPI.DataContracts;
+using ProductsAPI.AppServices.Abstractions;
+using ProductsAPI.DTOs;
 
 namespace ProductsAPI.Controllers;
 
@@ -15,12 +15,12 @@ public class ProductsController(IProductsAppService productsAppService, ILogger<
 	[Produces("application/json")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-	[ProducesDefaultResponseType(typeof(List<ProductResponse>))]
+	[ProducesDefaultResponseType(typeof(List<ProductDto>))]
 	public async Task<IActionResult> GetProductsAsync()
 	{
 		try
 		{
-			var result = await _productsAppService.ListAllAsync();
+			var result = await _productsAppService.GetProductsAsync();
 			return Ok(result);
 		}
 		catch (Exception ex)

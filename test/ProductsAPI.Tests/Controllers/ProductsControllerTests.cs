@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using FluentAssertions;
-using ProductsAPI.AppServices;
 using ProductsAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using ProductsAPI.DataContracts;
+using ProductsAPI.DTOs;
+using ProductsAPI.AppServices.Abstractions;
 
 namespace ProductsAPI.Tests.Controllers;
 
@@ -24,12 +24,12 @@ public class ProductsControllerTests
 	public async Task GetProductsShouldReturnAllItems()
 	{
         //arrange
-        appServiceMock.Setup(m => m.ListAllAsync()).Returns(() => Task.FromResult(DataSeedClass.GetProductResponseDataSeed()));
+        appServiceMock.Setup(m => m.GetProductsAsync(default)).Returns(() => Task.FromResult(DataSeedClass.GetProductResponseDataSeed()));
         var controller = new ProductsController(appServiceMock.Object, loggerMock.Object);
 
         // act
         var okResult = await controller.GetProductsAsync() as OkObjectResult;
-        var data = okResult?.Value as List<ProductResponse>;
+        var data = okResult?.Value as List<ProductDto>;
 
 		// assert
 		okResult.Should().NotBeNull();

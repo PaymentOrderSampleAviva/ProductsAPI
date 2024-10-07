@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using ProductsAPI.DataContracts;
+using ProductsAPI.AppServices.Abstractions;
+using ProductsAPI.DTOs;
 using ProductsAPI.Repositories;
 
 namespace ProductsAPI.AppServices;
@@ -9,9 +10,9 @@ public class ProductsAppService(IProductsRepository repository, IMapper mapper) 
 	private readonly IProductsRepository _repository = repository;
 	private readonly IMapper _mapper = mapper;
 
-	public async Task<IReadOnlyList<ProductResponse>> ListAllAsync()
+	public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(CancellationToken cancellationToken = default)
 	{
-		var products = await _repository.GetAllAsync();
-		return _mapper.Map<List<ProductResponse>>(products);
+		var products = await _repository.GetAllAsync(cancellationToken);
+		return _mapper.Map<List<ProductDto>>(products);
 	}
 }

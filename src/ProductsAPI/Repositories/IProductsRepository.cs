@@ -4,6 +4,6 @@ namespace ProductsAPI.Repositories
 {
 	public interface IProductsRepository
 	{
-		Task<IReadOnlyList<Product>> GetAllAsync();
+		Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken = default);
 	}
 }

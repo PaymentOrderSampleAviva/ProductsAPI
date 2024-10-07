@@ -8,8 +8,8 @@ public class ProductsRepository(ApplicationDbContext dbContext) : IProductsRepos
 {
 	private readonly ApplicationDbContext _dbContext = dbContext;
 
-	public async Task<IReadOnlyList<Product>> GetAllAsync()
+	public async Task<IReadOnlyList<Product>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
-		return await _dbContext.Products.AsNoTracking().ToListAsync();
+		return await _dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
 	}
 }
