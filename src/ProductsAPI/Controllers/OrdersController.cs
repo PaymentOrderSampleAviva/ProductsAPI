@@ -8,8 +8,6 @@ namespace ProductsAPI.Controllers
 	[Route("[controller]")]
 	public class OrdersController(IOrdersAppService orderAppService, ILogger<OrdersController> logger) : ControllerBase
 	{
-		private readonly IOrdersAppService _orderAppService = orderAppService;
-		private readonly ILogger _logger = logger;
 
 		[HttpGet]
 		[Produces("application/json")]
@@ -20,12 +18,12 @@ namespace ProductsAPI.Controllers
 		{
 			try
 			{
-				var result = await _orderAppService.GetOrdersAsync();
+				var result = await orderAppService.GetOrdersAsync();
 				return Ok(result);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An exception was thrown getting the list or orders.");
+				logger.LogError(ex, "An exception was thrown getting the list or orders.");
 			}
 
 			return StatusCode(500);
@@ -40,7 +38,7 @@ namespace ProductsAPI.Controllers
 		{
 			try
 			{
-				var result = await _orderAppService.CreateOrderAsync(orderDto);
+				var result = await orderAppService.CreateOrderAsync(orderDto);
 				return Created(string.Empty, result);
 			}
 			catch (ArgumentNullException)
@@ -53,7 +51,7 @@ namespace ProductsAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An exception occurs processing the order.");
+				logger.LogError(ex, "An exception occurs processing the order.");
 			}
 
 			return StatusCode(500);
@@ -68,7 +66,7 @@ namespace ProductsAPI.Controllers
 		{
 			try
 			{
-				var result = await _orderAppService.CancelOrderAsync(orderDto.OrderId, orderDto.Reason ?? string.Empty);
+				var result = await orderAppService.CancelOrderAsync(orderDto.OrderId, orderDto.Reason ?? string.Empty);
 				return Ok(result);
 			}
 			catch (ArgumentNullException)
@@ -81,7 +79,7 @@ namespace ProductsAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An exception occurs cancelling the order.");
+				logger.LogError(ex, "An exception occurs cancelling the order.");
 			}
 
 			return StatusCode(500);
