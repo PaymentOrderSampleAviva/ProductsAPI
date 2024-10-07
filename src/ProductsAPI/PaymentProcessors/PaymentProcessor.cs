@@ -8,7 +8,7 @@ public class PaymentProcessor(IPaymentProcessorSelector processorSelector) : Pay
 {
 	private readonly IPaymentProcessorSelector _processorSelector = processorSelector;
 
-	public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
+	public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel, CancellationToken cancellationToken = default)
 	{
 		orderModel.ThrowIfNull(nameof(orderModel));
 		orderModel.Products.Throw().IfCountLessThan(1);
@@ -17,7 +17,7 @@ public class PaymentProcessor(IPaymentProcessorSelector processorSelector) : Pay
 
 		if (paymentProcessor == null) throw new ArgumentNullException(nameof(paymentProcessor));
 
-		var response = await paymentProcessor.CreateOrderAsync(orderModel);
+		var response = await paymentProcessor.CreateOrderAsync(orderModel, cancellationToken);
 		return await Task.FromResult(response);
 	}
 }

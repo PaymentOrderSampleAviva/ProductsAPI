@@ -5,17 +5,17 @@ namespace ProductsAPI.PaymentProcessors
 {
 	public class ExternalPaymentProcessorBase(HttpClient httpClient, ILogger logger) : PaymentProcessorBase, IDisposable
 	{
-		public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
+		public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel, CancellationToken cancellationToken = default)
 		{
 			try
 			{
 				orderModel.Method = TranslatePaymentMethod(orderModel.Method);
-				var httpResponse = await httpClient.PostAsJsonAsync("/Order", orderModel);
+				var httpResponse = await httpClient.PostAsJsonAsync("/Order", orderModel, cancellationToken);
 
 				if (httpResponse != null && httpResponse.IsSuccessStatusCode)
 				{
 					//var payload = await httpResponse.Content.ReadAsStringAsync();
-					var ordedCreated = await JsonSerializer.DeserializeAsync<OrderCreatedModel>(await httpResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = false });
+					var ordedCreated = await JsonSerializer.DeserializeAsync<OrderCreatedModel>(await httpResponse.Content.ReadAsStreamAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = false }, cancellationToken);
 					return ordedCreated;
 				}
 				else

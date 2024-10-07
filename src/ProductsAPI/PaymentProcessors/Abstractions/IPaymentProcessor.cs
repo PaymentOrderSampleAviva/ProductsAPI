@@ -4,6 +4,6 @@ namespace ProductsAPI.PaymentProcessors.Abstractions
 {
     public interface IPaymentProcessor
     {
-        Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel);
+        Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel, CancellationToken cancellationToken = default);
     }
 }
