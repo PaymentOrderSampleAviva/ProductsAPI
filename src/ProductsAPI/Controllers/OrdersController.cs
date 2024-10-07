@@ -20,7 +20,7 @@ namespace ProductsAPI.Controllers
 		{
 			try
 			{
-				var result = await _orderAppService.ListOrdersAsync();
+				var result = await _orderAppService.GetOrdersAsync();
 				return Ok(result);
 			}
 			catch (Exception ex)

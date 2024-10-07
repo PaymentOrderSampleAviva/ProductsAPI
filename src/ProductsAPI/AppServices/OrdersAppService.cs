@@ -18,7 +18,7 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 	private readonly IMapper _mapper = mapper;
 	private readonly ILogger _logger = logger;
 
-	public async Task<IReadOnlyList<OrderDto>> ListOrdersAsync(CancellationToken cancellationToken = default)
+	public async Task<IReadOnlyList<OrderDto>> GetOrdersAsync(CancellationToken cancellationToken = default)
 	{
 		var orders = await _ordersRepository.GetAllAsync(cancellationToken);
 		return _mapper.Map<List<OrderDto>>(orders);
