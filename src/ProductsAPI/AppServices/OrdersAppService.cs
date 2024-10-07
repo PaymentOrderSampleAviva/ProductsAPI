@@ -18,20 +18,20 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 	private readonly IMapper _mapper = mapper;
 	private readonly ILogger _logger = logger;
 
-	public async Task<IReadOnlyList<OrderDto>> ListOrdersAsync()
+	public async Task<IReadOnlyList<OrderDto>> ListOrdersAsync(CancellationToken cancellationToken = default)
 	{
-		var orders = await _ordersRepository.GetAllAsync();
+		var orders = await _ordersRepository.GetAllAsync(cancellationToken);
 		return _mapper.Map<List<OrderDto>>(orders);
 	}
 
-	public async Task<OrderDto> CreateOrderAsync(CreateOrderDto request)
+	public async Task<OrderDto> CreateOrderAsync(CreateOrderDto request, CancellationToken cancellationToken = default)
 	{
 		request.ThrowIfNull();
 		request.Products.Throw().IfCountLessThan(1);
 
 		// Save order to db
 		var orderEntity = _mapper.Map<Order>(request);
-		await _ordersRepository.AddAsync(orderEntity);
+		await _ordersRepository.AddAsync(orderEntity, cancellationToken);
 
 		try
 		{
@@ -44,26 +44,26 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 
 			var orderFeeds = _mapper.Map<List<OrderFee>>(orderCreated.Fees);
 			orderEntity.Confirm(orderCreated.OrderId, orderFeeds);
-			await _ordersRepository.UpdateAsync(orderEntity);
+			await _ordersRepository.UpdateAsync(orderEntity, cancellationToken);
 
 			return _mapper.Map<OrderDto>(orderEntity);
 		}
 		catch (Exception ex)
 		{
-			var orderDto = await CancelOrderAsync(orderEntity.Id, "Exception occurs processing payment.");
+			var orderDto = await CancelOrderAsync(orderEntity.Id, "Exception occurs processing payment.", cancellationToken);
 			_logger.LogError(ex, "An exception occurs trying to process the payment", [orderDto.Id]);
 			throw;
 		}
 	}
 
-	public async Task<OrderDto> CancelOrderAsync(int orderId, string reason)
+	public async Task<OrderDto> CancelOrderAsync(int orderId, string reason, CancellationToken cancellationToken = default)
 	{
 		orderId.Throw().IfLessThan(1);
 
-		var orderEntity = await _ordersRepository.GetAsync(orderId, true);
+		var orderEntity = await _ordersRepository.GetAsync(orderId, true, cancellationToken);
 		orderEntity.ThrowIfNull();
 		orderEntity.Cancel(reason);
-		await _ordersRepository.UpdateAsync(orderEntity);
+		await _ordersRepository.UpdateAsync(orderEntity, cancellationToken);
 		return _mapper.Map<OrderDto>(orderEntity);
 	}
 }
