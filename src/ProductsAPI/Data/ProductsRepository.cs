@@ -10,4 +10,12 @@ public class ProductsRepository(ApplicationDbContext dbContext) : IProductsRepos
 	{
 		return await dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
 	}
+
+	public async Task<int> GetAvailableCountAsync(List<int> productIds, CancellationToken cancellationToken = default)
+	{
+		return await dbContext.Products
+			.Where(p => p.Status == ProductStatus.Available)
+			.Where(p => productIds.Contains(p.Id))
+			.CountAsync(cancellationToken);
+	}
 }

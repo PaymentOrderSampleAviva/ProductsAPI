@@ -10,6 +10,7 @@ using Throw;
 namespace ProductsAPI.AppServices;
 
 public class OrdersAppService (IOrdersRepository ordersRepository,
+	IProductsRepository productsRepository,
 	IPaymentMethodSelector paymentMethodSelector,
 	IMapper mapper, ILogger<OrdersAppService> logger) : IOrdersAppService
 {
@@ -23,6 +24,13 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 	{
 		request.ThrowIfNull();
 		request.Products.Throw().IfCountLessThan(1);
+
+		// check product availability
+		var productIDs = request.Products.Select(r => r.ProductId).ToList();
+		var availableProductsCount = await productsRepository.GetAvailableCountAsync(productIDs, cancellationToken);
+
+		productIDs.Throw(() => new ArgumentException("The product list should contain only available products")).IfCountGreaterThan(availableProductsCount);
+
 
 		// Save order to db
 		var orderEntity = mapper.Map<Order>(request);
