@@ -4,9 +4,9 @@ namespace ProductsAPI.Repositories
 {
 	public interface IOrdersRepository
 	{
-		Task<IReadOnlyList<Order>> GetAllAsync();
-		Task<Order?> GetAsync(int id, bool enableTraking = false);
-		Task<Order> AddAsync(Order order);
-		Task<Order> UpdateAsync(Order order);
+		Task<IReadOnlyList<Order>> GetAllAsync(CancellationToken cancellationToken = default);
+		Task<Order?> GetAsync(int id, bool enableTraking = false, CancellationToken cancellationToken = default);
+		Task<Order> AddAsync(Order order, CancellationToken cancellationToken = default);
+		Task<Order> UpdateAsync(Order order, CancellationToken cancellationToken = default);
 	}
 }
