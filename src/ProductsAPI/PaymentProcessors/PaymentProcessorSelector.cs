@@ -3,10 +3,10 @@ using ProductsAPI.PaymentProcessors.Providers;
 
 namespace ProductsAPI.PaymentProcessors;
 
-public class TdcPaymentProcessorSelector(IEnumerable<TdcFeeProvider> feeProviders, IServiceProvider serviceProvider)
-	: ITdcPaymentProcessorSelector
+public class PaymentProcessorSelector(IEnumerable<FeeProvider> feeProviders, IServiceProvider serviceProvider)
+	: IPaymentProcessorSelector
 {
-	private readonly IEnumerable<TdcFeeProvider> _feeProviders = feeProviders;
+	private readonly IEnumerable<FeeProvider> _feeProviders = feeProviders;
 	private readonly IServiceProvider _serviceProvider = serviceProvider;
 
 	public IPaymentProcessor? Select(double totalAmount)

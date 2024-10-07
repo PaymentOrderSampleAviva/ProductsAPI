@@ -7,6 +7,9 @@ using ProductsAPI.PaymentProcessors.Abstractions;
 using ProductsAPI.PaymentProcessors.Providers;
 using ProductsAPI.Repositories;
 using System.Reflection;
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
+using System.Net;
 
 namespace ProductsAPI;
 
@@ -32,8 +35,6 @@ public static class DependencyConfig
 	{
 		services.AddTransient<IProductsAppService, ProductsAppService>();
 		services.AddTransient<IOrdersAppService, OrdersAppService>();
-		services.AddTransient<IPaymentMethodSelector, PaymentMethodSelector>();
-		services.AddTransient<ITdcPaymentProcessorSelector, TdcPaymentProcessorSelector>();
 		return services;
 	}
 
@@ -55,9 +56,9 @@ public static class DependencyConfig
 
 	private static IServiceCollection AddPaymentServices(this IServiceCollection services)
 	{
-		services.AddSingleton<CashPaymentProcessor>();
-		services.AddSingleton<TransferPaymentProcessor>();
-		services.AddSingleton<TdcPaymentProcessor>();
+		services.AddSingleton<IPaymentMethodSelector, PaymentMethodSelector>();
+		services.AddSingleton<IPaymentProcessorSelector, PaymentProcessorSelector>();
+		services.AddSingleton<PaymentProcessor>();
 
 		services.AddHttpClient<PagaFacilPaymentProcessor>(
 		client =>
@@ -67,7 +68,7 @@ public static class DependencyConfig
 
 			// Add a user-agent default request header.
 			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
-		});
+		}).AddStandardResilienceHandler();
 
 		services.AddHttpClient<CazaPagosPaymentProcessor>(
 		client =>
@@ -77,13 +78,13 @@ public static class DependencyConfig
 
 			// Add a user-agent default request header.
 			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
-		});
+		}).AddResilienceHandler("CustomPipeline", static builder => GetHttpResiliencePolicies(builder));
 
 		// Card Fee providers
-		services.AddSingleton(new TdcFeeProvider (minAmount: 0, feePercent: 1, processorType: typeof(PagaFacilPaymentProcessor)));
-		services.AddSingleton(new TdcFeeProvider (minAmount: 0, feePercent: 2, processorType: typeof(CazaPagosPaymentProcessor)));
-		services.AddSingleton(new TdcFeeProvider (minAmount: 1500, feePercent: 1.5, processorType: typeof(CazaPagosPaymentProcessor)));
-		services.AddSingleton(new TdcFeeProvider (minAmount: 5000, feePercent: 0.5, processorType: typeof(CazaPagosPaymentProcessor)));
+		services.AddSingleton(new FeeProvider (minAmount: 0, feePercent: 1, processorType: typeof(PagaFacilPaymentProcessor)));
+		services.AddSingleton(new FeeProvider (minAmount: 0, feePercent: 2, processorType: typeof(CazaPagosPaymentProcessor)));
+		services.AddSingleton(new FeeProvider (minAmount: 1500, feePercent: 1.5, processorType: typeof(CazaPagosPaymentProcessor)));
+		services.AddSingleton(new FeeProvider (minAmount: 5000, feePercent: 0.5, processorType: typeof(CazaPagosPaymentProcessor)));
 
 		return services;
 	}
@@ -93,5 +94,38 @@ public static class DependencyConfig
 		services.AddAutoMapper(Assembly.GetExecutingAssembly());
 		services.AddLogging();
 		return services;
+	}
+
+	private static ResiliencePipelineBuilder<HttpResponseMessage> GetHttpResiliencePolicies(ResiliencePipelineBuilder<HttpResponseMessage> builder)
+	{
+		// See: https://www.pollydocs.org/strategies/retry.html
+		builder.AddRetry(new HttpRetryStrategyOptions
+		{
+			// Customize and configure the retry logic.
+			BackoffType = DelayBackoffType.Exponential,
+			MaxRetryAttempts = 5,
+			UseJitter = true
+		});
+
+		builder.AddCircuitBreaker(new HttpCircuitBreakerStrategyOptions
+		{
+			// Customize and configure the circuit breaker logic.
+			SamplingDuration = TimeSpan.FromSeconds(10),
+			FailureRatio = 0.2,
+			MinimumThroughput = 3,
+			ShouldHandle = static args =>
+			{
+				return ValueTask.FromResult(args is
+				{
+					Outcome.Result.StatusCode:
+						HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests
+				});
+			}
+		});
+
+		// See: https://www.pollydocs.org/strategies/timeout.html
+		builder.AddTimeout(TimeSpan.FromSeconds(5));
+
+		return builder;
 	}
 }

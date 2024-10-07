@@ -1,12 +1,11 @@
-﻿using ProductsAPI.PaymentProcessors.Abstractions;
-using ProductsAPI.PaymentProcessors.Model;
+﻿using ProductsAPI.PaymentProcessors.Model;
 using System.Text.Json;
 
 namespace ProductsAPI.PaymentProcessors
 {
-	public abstract class ExternalPaymentProcessorBase(HttpClient httpClient, ILogger logger) : IPaymentProcessor, IDisposable
+	public class ExternalPaymentProcessorBase(HttpClient httpClient, ILogger logger) : PaymentProcessorBase, IDisposable
 	{
-		public virtual async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
+		public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
 		{
 			try
 			{

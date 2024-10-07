@@ -1,19 +1,25 @@
-﻿using Throw;
+﻿using ProductsAPI.PaymentProcessors.Abstractions;
+using Throw;
 
 namespace ProductsAPI.PaymentProcessors.Providers;
 
 public class FeeProvider
 {
-	public FeeProvider(double minAmount, FeeCalculator feeCalculator)
+	public FeeProvider(double minAmount, double feePercent, Type processorType)
 	{
 		minAmount.Throw().IfLessThan(0);
-		feeCalculator.ThrowIfNull();
+		feePercent.Throw().IfLessThanOrEqualTo(0);
+		processorType.ThrowIfNull();
+
+		if (!processorType.IsAssignableTo(typeof(IPaymentProcessor))) throw new ArgumentException($"Processor type must implement {nameof(IPaymentProcessor)} interface.");
 
 		MinAmount = minAmount;
-		FeeCalculator = feeCalculator;
+		FeePercent = feePercent;
+		ProcessorType = processorType;
 	}
 
 	public double MinAmount { get; init; }
-	public FeeCalculator FeeCalculator { get; init; }
+	public double FeePercent { get; init; }
+	public Type ProcessorType { get; init; }
 
 }

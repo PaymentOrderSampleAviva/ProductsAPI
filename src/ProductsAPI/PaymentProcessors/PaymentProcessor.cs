@@ -4,16 +4,16 @@ using Throw;
 
 namespace ProductsAPI.PaymentProcessors;
 
-public class TdcPaymentProcessor(ITdcPaymentProcessorSelector tdcProcessorSelector) : PaymentProcessorBase
+public class PaymentProcessor(IPaymentProcessorSelector processorSelector) : PaymentProcessorBase
 {
-	private readonly ITdcPaymentProcessorSelector _tdcProcessorSelector = tdcProcessorSelector;
+	private readonly IPaymentProcessorSelector _processorSelector = processorSelector;
 
 	public override async Task<OrderCreatedModel> CreateOrderAsync(CreateOrderModel orderModel)
 	{
 		orderModel.ThrowIfNull(nameof(orderModel));
 		orderModel.Products.Throw().IfCountLessThan(1);
 
-		var paymentProcessor = _tdcProcessorSelector.Select(orderModel.GetTotalAmount());
+		var paymentProcessor = _processorSelector.Select(orderModel.GetTotalAmount());
 
 		if (paymentProcessor == null) throw new ArgumentNullException(nameof(paymentProcessor));
 

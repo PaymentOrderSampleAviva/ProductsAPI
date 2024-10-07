@@ -1,6 +1,6 @@
 ﻿namespace ProductsAPI.PaymentProcessors.Abstractions;
 
-public interface ITdcPaymentProcessorSelector
+public interface IPaymentProcessorSelector
 {
     IPaymentProcessor? Select(double totalAmount);
 }
