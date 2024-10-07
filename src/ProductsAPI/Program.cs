@@ -13,7 +13,7 @@ namespace ProductsAPI
 
 			builder.Services.AddControllers().AddJsonOptions(options =>
 				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-			builder.Services.AddCoreDependenciesDev();
+			builder.Services.AddCoreDependenciesDev(builder.Configuration);
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
@@ -30,10 +30,6 @@ namespace ProductsAPI
 				app.UseSwaggerUI();
 				app.DataSeedAsync().Wait();
 				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/error");
 			}
 
 			app.UseHttpsRedirection();

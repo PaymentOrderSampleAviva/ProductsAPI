@@ -29,6 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="ResourceStrings.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator>ResXFileCodeGenerator</Generator>

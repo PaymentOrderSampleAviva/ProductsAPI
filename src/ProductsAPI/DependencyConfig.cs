@@ -10,23 +10,25 @@ using System.Reflection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using System.Net;
+using ProductsAPI.PaymentProcessors.Options;
+using System.Text;
 
 namespace ProductsAPI;
 
 public static class DependencyConfig
 {
-	public static IServiceCollection AddCoreDependenciesDev(this IServiceCollection services)
+	public static IServiceCollection AddCoreDependenciesDev(this IServiceCollection services, ConfigurationManager configuration)
 	{
-		services.AddCoreDependencies();
+		services.AddCoreDependencies(configuration);
 		services.AddInMemoryDataStorage();
 		return services;
 	}
 
-	public static IServiceCollection AddCoreDependencies(this IServiceCollection services)
+	public static IServiceCollection AddCoreDependencies(this IServiceCollection services, ConfigurationManager configuration)
 	{
 		services.AddAppServices();
 		services.AddRepositories();
-		services.AddPaymentServices();
+		services.AddPaymentServices(configuration);
 		services.AddDefaultServices();
 		return services;
 	}
@@ -54,7 +56,7 @@ public static class DependencyConfig
 		return services;
 	}
 
-	private static IServiceCollection AddPaymentServices(this IServiceCollection services)
+	private static IServiceCollection AddPaymentServices(this IServiceCollection services, ConfigurationManager configuration)
 	{
 		services.AddSingleton<IPaymentMethodSelector, PaymentMethodSelector>();
 		services.AddSingleton<IPaymentProcessorSelector, PaymentProcessorSelector>();
@@ -63,21 +65,31 @@ public static class DependencyConfig
 		services.AddHttpClient<PagaFacilPaymentProcessor>(
 		client =>
 		{
+			var options = configuration.GetSection(PaymentProcessorOptions.PagaFacil)
+													 .Get<PaymentProcessorOptions>();
+
+			if (options == null) throw new ArgumentNullException(nameof(options));
+
 			// Set the base address of the named client.
-			client.BaseAddress = new Uri("https://app-paga-chg-aviva.azurewebsites.net/");
+			client.BaseAddress = new Uri(options.BaseUrl);
 
 			// Add a user-agent default request header.
-			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
+			client.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
 		}).AddStandardResilienceHandler();
 
 		services.AddHttpClient<CazaPagosPaymentProcessor>(
 		client =>
 		{
+			var options = configuration.GetSection(PaymentProcessorOptions.CazaPagos)
+													 .Get<PaymentProcessorOptions>();
+
+			if (options == null) throw new ArgumentNullException(nameof(options));
+
 			// Set the base address of the named client.
-			client.BaseAddress = new Uri("https://app-caza-chg-aviva.azurewebsites.net/");
+			client.BaseAddress = new Uri(options.BaseUrl);
 
 			// Add a user-agent default request header.
-			client.DefaultRequestHeaders.Add("x-api-key", "apikey-fj9esodija09s2");
+			client.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
 		}).AddResilienceHandler("CustomPipeline", static builder => GetHttpResiliencePolicies(builder));
 
 		// Card Fee providers
