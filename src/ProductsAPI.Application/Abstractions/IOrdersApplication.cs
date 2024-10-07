@@ -2,7 +2,7 @@
 
 namespace ProductsAPI.Application.Abstractions
 {
-    public interface IOrdersAppService
+    public interface IOrdersApplication
     {
         Task<IReadOnlyList<OrderDto>> GetOrdersAsync(CancellationToken cancellationToken = default);
 

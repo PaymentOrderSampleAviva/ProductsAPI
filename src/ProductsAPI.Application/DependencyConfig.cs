@@ -8,8 +8,8 @@ public static class DependencyConfig
 {
 	public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
 	{
-		services.AddTransient<IProductsAppService, ProductsAppService>();
-		services.AddTransient<IOrdersAppService, OrdersAppService>();
+		services.AddTransient<IProductsApplication, ProductsApplication>();
+		services.AddTransient<IOrdersApplication, OrdersApplication>();
 		services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 		return services;

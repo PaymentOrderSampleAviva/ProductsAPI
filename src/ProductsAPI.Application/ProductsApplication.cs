@@ -5,7 +5,7 @@ using ProductsAPI.Application.Abstractions;
 
 namespace ProductsAPI.Application;
 
-public class ProductsAppService(IProductsRepository repository, IMapper mapper) : IProductsAppService
+public class ProductsApplication(IProductsRepository repository, IMapper mapper) : IProductsApplication
 {
     public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(CancellationToken cancellationToken = default)
     {

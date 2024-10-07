@@ -11,12 +11,12 @@ namespace ProductsAPI.Tests.Controllers;
 [TestClass]
 public class ProductsControllerTests
 {
-    private readonly Mock<IProductsAppService> appServiceMock;
+    private readonly Mock<IProductsApplication> appServiceMock;
     private readonly Mock<ILogger<ProductsController>> loggerMock;
 
     public ProductsControllerTests()
     {
-        appServiceMock = new Mock<IProductsAppService>();
+        appServiceMock = new Mock<IProductsApplication>();
         loggerMock = new Mock<ILogger<ProductsController>>();
     }
 

@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace ProductsAPI.Application;
 
-public class OrdersAppService(IOrdersRepository ordersRepository,
+public class OrdersApplication(IOrdersRepository ordersRepository,
     IProductsRepository productsRepository,
     IPaymentMethodSelector paymentMethodSelector,
-    IMapper mapper, ILogger<OrdersAppService> logger) : IOrdersAppService
+    IMapper mapper, ILogger<OrdersApplication> logger) : IOrdersApplication
 {
     public async Task<IReadOnlyList<OrderDto>> GetOrdersAsync(CancellationToken cancellationToken = default)
     {

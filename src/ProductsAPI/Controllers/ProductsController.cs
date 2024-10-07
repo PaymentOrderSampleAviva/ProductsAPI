@@ -6,7 +6,7 @@ namespace ProductsAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductsController(IProductsAppService productsAppService, ILogger<ProductsController> logger) : ControllerBase
+public class ProductsController(IProductsApplication productsAppService, ILogger<ProductsController> logger) : ControllerBase
 {
 
 	[HttpGet]
