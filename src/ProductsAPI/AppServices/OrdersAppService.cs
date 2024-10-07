@@ -40,7 +40,7 @@ public class OrdersAppService (IOrdersRepository ordersRepository,
 
 			if (paymentProcessor == null) throw new ArgumentNullException(nameof(paymentProcessor));
 
-			var orderCreated = await paymentProcessor.CreateOrderAsync(createOrderModel);
+			var orderCreated = await paymentProcessor.CreateOrderAsync(createOrderModel, cancellationToken);
 
 			var orderFeeds = _mapper.Map<List<OrderFee>>(orderCreated.Fees);
 			orderEntity.Confirm(orderCreated.OrderId, orderFeeds);
