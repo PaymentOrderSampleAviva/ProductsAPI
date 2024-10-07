@@ -11,7 +11,6 @@ using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using System.Net;
 using ProductsAPI.PaymentProcessors.Options;
-using System.Text;
 
 namespace ProductsAPI;
 
